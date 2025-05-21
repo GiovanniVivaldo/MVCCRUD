@@ -1,0 +1,24 @@
+﻿@model APLICACIONPRUEBA.Models.Login
+@{
+    ViewData["Title"] = "Iniciar Sesión";
+}
+
+<h2>Iniciar Sesión</h2>
+
+<form asp-action="Login" method="post">
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Contraseña</label>
+        <input asp-for="Contraseña" type="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger mt-2">@ViewBag.Error</div>
+    }
+</form>
+

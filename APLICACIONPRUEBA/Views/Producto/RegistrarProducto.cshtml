@@ -1,0 +1,35 @@
+﻿@model APLICACIONPRUEBA.Models.Producto
+@{
+    ViewData["Title"] = "Registrar Producto";
+}
+
+<h2>Registrar Nuevo Producto</h2>
+
+<form asp-action="RegistrarProducto" method="post">
+    <div class="form-group">
+        <label>Nombre Producto</label>
+        <input asp-for="Nombre_Producto" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Marca</label>
+        <input asp-for="Marca" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Precio</label>
+        <input asp-for="Precio" class="form-control" required type="number" />
+    </div>
+    <div class="form-group">
+        <label>Cantidad</label>
+        <input asp-for="Cantidad" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Categoria</label>
+        <input asp-for="Categoria" class="form-control" required/>
+    </div>
+    <button type="submit" class="btn btn-success">Registrar</button>
+
+    @if (ViewBag.Mensaje != null)
+    {
+        <div class="alert alert-danger mt-2">@ViewBag.Mensaje</div>
+    }
+</form>

@@ -1,0 +1,79 @@
+﻿@model List<APLICACIONPRUEBA.Models.Producto>
+@{
+    ViewData["Title"] = "Lista de Productos";
+}
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-info">@TempData["Mensaje"]</div>
+}
+
+<h2>Productos Registrados</h2>
+
+<!-- Formulario de filtros -->
+<form asp-action="VerProductos" method="get" class="mb-4">
+    <div class="row mb-2">
+        <div class="col">
+            <input type="number" name="IdProducto" class="form-control" placeholder="ID Producto" />
+        </div>
+        <div class="col">
+            <input type="text" name="NombreProducto" class="form-control" placeholder="Nombre del producto" />
+        </div>
+        <div class="col">
+            <input type="text" name="marca" class="form-control" placeholder="Marca" />
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col">
+            <input type="number" step="0.01" name="precio" class="form-control" placeholder="Precio" />
+        </div>
+        <div class="col">
+            <input type="text" name="cantidad" class="form-control" placeholder="Cantidad" />
+        </div>
+        <div class="col">
+            <input type="text" name="categoria" class="form-control" placeholder="Categoría" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-end">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </div>
+</form>
+
+<!-- Tabla de resultados -->
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID_Producto</th>
+            <th>Nombre_Producto</th>
+            <th>Marca</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th>Categoria</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var producto in Model)
+        {
+            <tr>
+                <td>@producto.ID_Producto</td>
+                <td>@producto.Nombre_Producto</td>
+                <td>@producto.Marca</td>
+                <td>@producto.Precio</td>
+                <td>@producto.Cantidad</td>
+                <td>@producto.Categoria</td>
+                <td>
+                    <form asp-controller="Producto" asp-action="Vender" method="post">
+                        <input type="hidden" name="idProducto" value="@producto.ID_Producto" />
+                        <input type="number" name="cantidad" value="1" min="1" class="form-control" style="width: 70px; display: inline;" />
+                        <button type="submit" class="btn btn-success btn-sm">Vender</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+<a asp-controller="Usuario" asp-action="Index" class="btn btn-primary">Regresar</a>
+<a class="btn btn-outline-secondary" asp-controller="Auth" asp-action="Logout">Cerrar Sesión</a>
