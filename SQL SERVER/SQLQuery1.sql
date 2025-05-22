@@ -292,4 +292,4 @@ BEGIN
     SET @Resultado = 1; -- Éxito
 END
 
-select*from Ventas
+select*from Productos

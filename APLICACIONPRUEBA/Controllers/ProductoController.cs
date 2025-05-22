@@ -126,5 +126,56 @@ public class ProductoController : Controller
 
         return RedirectToAction("VerProductos");
     }
+
+    [HttpGet]
+    public IActionResult RegistrarProducto()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public IActionResult RegistrarProducto(Producto producto)
+    {
+        if (string.IsNullOrEmpty(HttpContext.Session.GetString("usuarioEmail")))
+        {
+            return RedirectToAction("Login", "Auth");
+        }
+
+        int resultado = 0;
+        string connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlCommand cmd = new SqlCommand("RegistrarProducto", connection))
+        {
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@Nombre_Producto", producto.Nombre_Producto);
+            cmd.Parameters.AddWithValue("@Marca", producto.Marca);
+            cmd.Parameters.AddWithValue("@Precio", producto.Precio);
+            cmd.Parameters.AddWithValue("@Cantidad", producto.Cantidad);
+            cmd.Parameters.AddWithValue("@Categoria", producto.Categoria);
+
+            SqlParameter outputParam = new SqlParameter("@Existe", SqlDbType.Int)
+            {
+                Direction = ParameterDirection.Output
+            };
+            cmd.Parameters.Add(outputParam);
+
+            connection.Open();
+            cmd.ExecuteNonQuery();
+
+            resultado = (int)outputParam.Value;
+        }
+
+        if (resultado == 1)
+        {
+            return RedirectToAction("VerProductos");
+        }
+        else
+        {
+            ViewBag.Mensaje = "El producto ya está registrado.";
+            return View(producto);
+        }
+    }
 }
 
